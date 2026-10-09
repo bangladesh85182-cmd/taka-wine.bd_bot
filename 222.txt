@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EarnMoney - আয় করার ওয়েব অ্যাপ</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    body {
+      background-color: #f0f2f5;
+      color: #333;
+      padding: 20px 10px;
+      display: flex;
+      justify-content: center;
+    }
+    .app-container {
+      width: 100%;
+      max-width: 480px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      padding: 20px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .header h1 {
+      font-size: 22px;
+      color: #0088cc;
+    }
+    
+    /* Balance Card */
+    .balance-card {
+      background: linear-gradient(135deg, #0088cc, #005588);
+      color: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0, 136, 204, 0.3);
+    }
+    .balance-title {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+    .balance-amount {
+      font-size: 36px;
+      font-weight: bold;
+      margin: 8px 0;
+    }
+
+    /* Common Card Section */
+    .section-card {
+      background: #fafafa;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .section-card h3 {
+      font-size: 16px;
+      color: #222;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .section-desc {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 12px;
+    }
+
+    /* Buttons */
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #0088cc;
+      color: white;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn:hover {
+      background: #0077b5;
+    }
+    .btn:disabled {
+      background: #cccccc;
+      cursor: not-allowed;
+    }
+    .btn-success {
+      background: #28a745;
+    }
+    .btn-success:hover {
+      background: #218838;
+    }
+
+    /* Tasks List */
+    .task-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #ffffff;
+      padding: 10px 12px;
+      border-radius: 8px;
+      margin-top: 8px;
+      border: 1px solid #eee;
+    }
+    .task-info {
+      text-align: left;
+    }
+    .task-title {
+      font-weight: bold;
+      font-size: 13px;
+    }
+    .task-reward {
+      font-size: 12px;
+      color: #28a745;
+      font-weight: bold;
+    }
+    .task-btn {
+      width: auto;
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+
+    /* Inputs & Select */
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin: 6px 0 12px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <div class="header">
+      <h1>💰 EarnMoney Web App</h1>
+    </div>
+
+    <!-- Dashboard Balance -->
+    <div class="balance-card">
+      <div class="balance-title">আপনার মোট ব্যালেন্স</div>
+      <div class="balance-amount">৳ <span id="user-balance">0.00</span></div>
+      <small id="user-id-display">User ID: Loading...</small>
+    </div>
+
+    <!-- Watch Ads Section -->
+    <div class="section-card">
+      <h3>📺 বিজ্ঞাপন দেখুন</h3>
+      <p class="section-desc">প্রতিটি বিজ্ঞাপন দেখার জন্য পাবেন ৫০ পয়সা (৳০.৫০)</p>
+      <button class="btn" id="watch-ad-btn" onclick="watchAd()">বিজ্ঞাপন দেখুন (৳০.৫০)</button>
+    </div>
+
+    <!-- Tasks Section -->
+    <div class="section-card">
+      <h3>📋 কাজ (Tasks) সম্পূর্ণ করুন</h3>
+      <p class="section-desc">প্রতিটি টাস্ক সম্পন্ন করলে পাবেন ১ টাকা (৳১.০০)</p>
+      
+      <div class="task-item">
+        <div class="task-info">
+          <div class="task-title">ইউটিউব চ্যানেল সাবস্ক্রাইব</div>
+          <div class="task-reward">+ ৳১.০০</div>
+        </div>
+        <button class="btn task-btn" id="task1-btn" onclick="completeTask('task1', 1.0)">পুরণ করুন</button>
+      </div>
+
+      <div class="task-item">
+        <div class="task-info">
+          <div class="task-title">ফেসবুক পেজ লাইক দিন</div>
+          <div class="task-reward">+ ৳১.০০</div>
+        </div>
+        <button class="btn task-btn" id="task2-btn" onclick="completeTask('task2', 1.0)">পুরণ করুন</button>
+      </div>
+    </div>
+
+    <!-- Referral Section -->
+    <div class="section-card">
+      <h3>👥 রেফার করে আয় করুন</h3>
+      <p class="section-desc">প্রতিটি সফল রেফারে পাবেন ১০ টাকা (৳১০.০০)</p>
+      <button class="btn" onclick="copyReferralLink()">রেফারেল লিংক কপি করুন</button>
+    </div>
+
+    <!-- Withdrawal Section -->
+    <div class="section-card">
+      <h3>💸 টাকা তুলুন (Withdraw)</h3>
+      <p class="section-desc" style="color: #d9534f; font-weight: bold;">সর্বনিম্ন টাকা তোলার সীমা: ৳১০০.০০</p>
+      
+      <label for="payment-method" style="font-size: 13px;">পেমেন্ট মেথড সিলেক্ট করুন:</label>
+      <select id="payment-method">
+        <option value="bKash">বিকাশ (bKash)</option>
+        <option value="Nagad">নগদ (Nagad)</option>
+        <option value="Rocket">রকেট (Rocket)</option>
+      </select>
+      
+      <label for="withdraw-amount" style="font-size: 13px;">উইথড্র পরিমাণ (টাকা):</label>
+      <input type="number" id="withdraw-amount" placeholder="যেমন: 100" min="100">
+      
+      <label for="account-number" style="font-size: 13px;">মোবাইল অ্যাকাউন্ট নম্বর:</label>
+      <input type="text" id="account-number" placeholder="017XXXXXXXX">
+      
+      <button class="btn btn-success" onclick="requestWithdraw()">উইথড্র রিকোয়েস্ট পাঠান</button>
+    </div>
+  </div>
+
+  <script>
+    // ইউজারের ইউনিক আইডি ও ব্যালেন্স হ্যান্ডেল করা
+    let userId = localStorage.getItem('app_user_id');
+    if (!userId) {
+      userId = 'USER_' + Math.floor(100000 + Math.random() * 900000);
+      localStorage.setItem('app_user_id', userId);
+    }
+    document.getElementById('user-id-display').innerText = 'ID: ' + userId;
+
+    let balance = parseFloat(localStorage.getItem('user_balance')) || 0.00;
+    let completedTasks = JSON.parse(localStorage.getItem('completed_tasks')) || [];
+
+    // ইন্টারফেস আপডেটের ফাংশন
+    function updateUI() {
+      document.getElementById('user-balance').innerText = balance.toFixed(2);
+      localStorage.setItem('user_balance', balance);
+
+      completedTasks.forEach(taskId => {
+        const btn = document.getElementById(taskId + '-btn');
+        if (btn) {
+          btn.innerText = "সম্পন্ন";
+          btn.disabled = true;
+        }
+      });
+    }
+
+    // ১. অ্যাড দেখার ফাংশন (৳০.৫০)
+    function watchAd() {
+      const btn = document.getElementById('watch-ad-btn');
+      btn.disabled = true;
+      let seconds = 5;
+
+      const timer = setInterval(() => {
+        btn.innerText = `বিজ্ঞাপন দেখা হচ্ছে... (${seconds}s)`;
+        seconds--;
+
+        if (seconds < 0) {
+          clearInterval(timer);
+          balance += 0.50;
+          updateUI();
+          alert("অভিনন্দন! বিজ্ঞাপন দেখার জন্য আপনি ৫০ পয়সা (৳০.৫০) পেয়েছেন।");
+          btn.innerText = "বিজ্ঞাপন দেখুন (৳০.৫০)";
+          btn.disabled = false;
+        }
+      }, 1000);
+    }
+
+    // ২. টাস্ক কমপ্লিট করার ফাংশন (৳১.০০)
+    function completeTask(taskId, reward) {
+      if (completedTasks.includes(taskId)) return;
+
+      // ডেমো হিসেবে কাজ ওপেন করা
+      window.open('https://google.com', '_blank');
+
+      setTimeout(() => {
+        balance += reward;
+        completedTasks.push(taskId);
+        localStorage.setItem('completed_tasks', JSON.stringify(completedTasks));
+        updateUI();
+        alert(`টাস্ক সফলভাবে শেষ হয়েছে! আপনার অ্যাকাউন্টে ৳${reward.toFixed(2)} যুক্ত করা হয়েছে।`);
+      }, 2000);
+    }
+
+    // ৩. রেফারেল লিংক কপি (৳১০.০০ প্রতি রেফার)
+    function copyReferralLink() {
+      const currentUrl = window.location.href.split('?')[0];
+      const refLink = `${currentUrl}?ref=${userId}`;
+      
+      navigator.clipboard.writeText(refLink);
+      alert("আপনার ইউনিক রেফারেল লিংক কপি হয়েছে!\n\n" + refLink + "\n\nযেকোনো ইউজার এই লিংকে প্রবেশ করলে আপনি ৳১০.০০ পাবেন।");
+    }
+
+    // ৪. উইথড্র ফাংশন (সর্বনিম্ন ৳১০০)
+    function requestWithdraw() {
+      const amount = parseFloat(document.getElementById('withdraw-amount').value);
+      const number = document.getElementById('account-number').value.trim();
+      const method = document.getElementById('payment-method').value;
+
+      if (!amount || amount < 100) {
+        alert("সর্বনিম্ন উইথড্র পরিমাণ ১০০ টাকা (৳১০০)!");
+        return;
+      }
+
+      if (amount > balance) {
+        alert("আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই!");
+        return;
+      }
+
+      if (number.length < 11) {
+        alert("অনুগ্রহ করে সঠিক ১১ ডিজিটের মোবাইল নম্বর দিন!");
+        return;
+      }
+
+      // ব্যালেন্স কেটে নেওয়া
+      balance -= amount;
+      updateUI();
+
+      alert(`আপনার ৳${amount} টাকার ${method} উইথড্র রিকোয়েস্ট সফলভাবে জমা হয়েছে। শীঘ্রই এটি প্রসেস করা হবে।`);
+
+      // ইনপুট খালি করা
+      document.getElementById('withdraw-amount').value = '';
+      document.getElementById('account-number').value = '';
+    }
+
+    // অ্যাপ লোড হওয়ার পর UI সিঙ্ক করা
+    updateUI();
+  </script>
+</body>
+</html>
